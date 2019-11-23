@@ -1,70 +1,74 @@
+import java.io.*;
 import java.util.ArrayList;
 
 public class MovieList {
 
     private ArrayList<Movie> movie_list;
-    private int Loc = -1;
+    private int loc = -1;
     public MovieList() {
         movie_list = new ArrayList<Movie>();
-        Loc = 0;
     }
 
     public MovieList(Movie Movie) {
         this();
         movie_list.add(Movie);
+        loc = 0;
     }
 
     public MovieList(ArrayList Movies) {
         movie_list = Movies;
-        Loc = 0;
+        loc = 0;
     }
 
     public MovieList(String name, String release_date,double rating, String synopsis,String folder,String trailer,String genre, int year) {
         this();
         movie_list.add(new Movie(name, release_date, rating, synopsis,folder,trailer,genre, year));
+        loc = 0;
     }
 
     public MovieList(String name, String release_date,double rating, String synopsis,String folder, String poster_loc,String trailer,String genre, int year) {
         this();
         movie_list.add(new Movie(name, release_date, rating, synopsis,folder,poster_loc,trailer,genre, year));
+        loc = 0;
     }
 
     public ArrayList<Movie> getMovie_list() {
         return movie_list;
     }
 
-    public void move_left() {
-        if (Loc > 0)
+    public void moveLeft() {
+        if (loc > 0)
         {
-            Loc--;
+            loc--;
         }
     }
 
-    public void  move_right() {
-        if (Loc < movie_list.size() - 1)
+    public void  moveRight() {
+        if (loc < movie_list.size() - 1)
         {
-            Loc++;
+            loc++;
         }
     }
 
-    public int getCurrent_movie() {
-        return Loc;
+    public int getloc() {
+        return loc;
     }
 
-    public void setCurrent_movie(int current_movie) {
-        this.Loc = current_movie;
+    public void setloc(int current_movie) {
+        this.loc = current_movie;
     }
 
     public  void add(Movie movie) {
+        if (loc == -1) loc++;
         movie_list.add(movie);
     }
 
     public void add(String name, String release_date,double rating, String synopsis,String folder,String trailer,String genre, int year) {
-        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,trailer,genre, year));
+        this.add(new Movie(name, release_date, rating, synopsis,folder,trailer,genre, year));
     }
 
     public void add(String name, String release_date,double rating, String synopsis,String folder, String poster_loc,String trailer,String genre, int year) {
-        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,poster_loc, trailer,genre,year));
+        this.add(new Movie(name, release_date, rating, synopsis,folder,poster_loc, trailer,genre,year));
     }
 
     public void delete(Movie movie) {
@@ -87,6 +91,13 @@ public class MovieList {
         return null;
     }
 
+    public static void main(String[] args) {
+        MovieList a = new MovieList();
+        a.addDefault();
+        System.out.print(a);
+        System.out.print(a.getCurrentMovie().getImageLoc());
+    }
+
     public void delete(String name) {
         Movie movie = this.find(name);
         if (movie != null) {
@@ -95,9 +106,35 @@ public class MovieList {
     }
 
     public Movie getCurrentMovie() {
-        return movie_list.get(Loc);
+        return movie_list.get(loc);
     }
 
+    public void addDefault() {
+        try {
+            FileReader fr = new FileReader(new File( "movies\\movies.txt"));
+            BufferedReader in = new BufferedReader(fr);
+            String name,release_date,synopsis ,imageLoc,trailer,posterLoc,genre;
+            double rating;
+            int year;
+
+            while ((name = in.readLine()) != null) {
+                 name = name.split("=")[1];
+                 release_date = in.readLine().split("=")[1];
+                 year = Integer.parseInt(in.readLine().split("=")[1]);
+                 trailer = in.readLine().split("=")[1];
+                 synopsis = in.readLine().split("=")[1];
+                 genre = in.readLine().split("=")[1];
+                 rating = Double.parseDouble(in.readLine().split("=")[1]);
+                 imageLoc = "movies\\"+name.toLowerCase().replaceAll(" ", "_").replaceAll("[^A-Za-z0-9_]", "");
+                 this.add(name,release_date,rating,synopsis,imageLoc,trailer,genre,year);
+                 in.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public String toString() {
