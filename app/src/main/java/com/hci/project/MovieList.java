@@ -19,7 +19,7 @@ public class MovieList {
         Loc = 0;
     }
 
-    public MovieList(String name, String release_date,double rating, String synopsis,String folder,String trailer,String,String genre, int year) {
+    public MovieList(String name, String release_date,double rating, String synopsis,String folder,String trailer,String genre, int year) {
         this();
         movie_list.add(new Movie(name, release_date, rating, synopsis,folder,trailer,genre, year));
     }
