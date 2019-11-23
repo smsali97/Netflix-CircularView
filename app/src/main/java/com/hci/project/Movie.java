@@ -5,26 +5,37 @@ public class Movie {
     double rating;
     String synopsis;
     String imageLoc;
+    String trailer;
     String posterLoc;
+    String genre;
+    int year;
 
 
 
-    public Movie(String name, String release_date,double rating, String synopsis,String folder) {
+    public Movie(String name, String release_date,double rating, String synopsis,String folder,String trailer,String genre, int year) {
         this.name = name;
         this.release_date = release_date;
         this.rating = rating;
         this.synopsis = synopsis;
         this.imageLoc = folder;
         this.posterLoc = folder;
+        this.trailer = trailer;
+        this.genre = genre;
+        this.year = year;
     }
 
-    public Movie(String name, String release_date,double rating, String synopsis,String folder,String poster_loc) {
-        this.name = name;
-        this.release_date = release_date;
-        this.rating = rating;
-        this.synopsis = synopsis;
-        this.imageLoc = folder;
+    public Movie(String name, String release_date,double rating, String synopsis,String folder,String poster_loc,String trailer,String genre, int year) {
+        this(name, release_date,rating, synopsis,folder,trailer,genre,year);
         this.posterLoc = poster_loc;
+
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
     }
 
     public String getName() {
@@ -75,9 +86,26 @@ public class Movie {
         this.posterLoc = posterLoc;
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     @Override
     public String toString() {
-        String details = "Name: " + getName() + "\n\nRelease date: " + getRelease_date() + "\n\nSynopsis:\n" + getSynopsis() + "\n\nRating: " + getRating();
+        String details = "Name: " + getName() + "\n\nRelease date: " + getRelease_date() + "\n\nYear: " + getYear() + "\n\nTrailer: " + getTrailer()
+                 + "\n\nSynopsis:\n" + getSynopsis() + "\n\nGenre: " + getGenre() + "\n\nRating: " + getRating();
         return details;
     }
 }

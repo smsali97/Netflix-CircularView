@@ -19,14 +19,14 @@ public class MovieList {
         Loc = 0;
     }
 
-    public MovieList(String name, String release_date,double rating, String synopsis,String folder) {
+    public MovieList(String name, String release_date,double rating, String synopsis,String folder,String trailer,String,String genre, int year) {
         this();
-        movie_list.add(new Movie(name, release_date, rating, synopsis,folder));
+        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,trailer,genre, year));
     }
 
-    public MovieList(String name, String release_date,double rating, String synopsis,String folder, String poster_loc) {
+    public MovieList(String name, String release_date,double rating, String synopsis,String folder, String poster_loc,String trailer,String genre, int year) {
         this();
-        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,poster_loc));
+        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,poster_loc,trailer,genre, year));
     }
 
     public ArrayList<Movie> getMovie_list() {
@@ -59,12 +59,12 @@ public class MovieList {
         movie_list.add(movie);
     }
 
-    public void add(String name, String release_date,double rating, String synopsis,String folder) {
-        movie_list.add(new Movie(name, release_date, rating, synopsis,folder));
+    public void add(String name, String release_date,double rating, String synopsis,String folder,String trailer,String genre, int year) {
+        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,trailer,genre, year));
     }
 
-    public void add(String name, String release_date,double rating, String synopsis,String folder, String poster_loc) {
-        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,poster_loc));
+    public void add(String name, String release_date,double rating, String synopsis,String folder, String poster_loc,String trailer,String genre, int year) {
+        movie_list.add(new Movie(name, release_date, rating, synopsis,folder,poster_loc, trailer,genre,year));
     }
 
     public void delete(Movie movie) {
@@ -97,6 +97,7 @@ public class MovieList {
     public Movie getCurrentMovie() {
         return movie_list.get(Loc);
     }
+
 
     @Override
     public String toString() {
