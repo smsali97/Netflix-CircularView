@@ -1,4 +1,6 @@
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class MovieList {
@@ -98,7 +100,7 @@ public class MovieList {
         //System.out.print(a.getCurrentMovie().getImageLoc());
         String[][] list = a.getImagesForAllMovies();
         for (int i =0; i < list.length; i++) {
-            System.out.println(list[i][0]);
+            System.out.println(list[i][3]);
         }
     }
 
@@ -157,11 +159,12 @@ public class MovieList {
         int count = 0;
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isFile() && fileEntry.getName().compareToIgnoreCase("poster") != 0 && count < 3) {
-                images[count] = fileEntry.getAbsolutePath();
+                //images[count] = fileEntry.getAbsolutePath();
+                images[count] = Paths.get("").relativize(fileEntry.toPath()).toString();
                 count++;
             }
-            else if (fileEntry.isFile() && fileEntry.getName().compareToIgnoreCase("poster") == 0) {
-                images[3] = fileEntry.getAbsolutePath();
+            else if (fileEntry.isFile() && fileEntry.getName().compareToIgnoreCase("poster.jpg") == 0) {
+                images[3] = Paths.get("").relativize(fileEntry.toPath()).toString();s
             }
         }
         return images;
