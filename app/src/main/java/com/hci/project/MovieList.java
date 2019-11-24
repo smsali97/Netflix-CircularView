@@ -94,8 +94,12 @@ public class MovieList {
     public static void main(String[] args) {
         MovieList a = new MovieList();
         a.addDefault();
-        System.out.print(a);
-        System.out.print(a.getCurrentMovie().getImageLoc());
+        //System.out.print(a);
+        //System.out.print(a.getCurrentMovie().getImageLoc());
+        String[][] list = a.getImagesForAllMovies();
+        for (int i =0; i < list.length; i++) {
+            System.out.println(list[i][0]);
+        }
     }
 
     public void delete(String name) {
@@ -118,22 +122,49 @@ public class MovieList {
             int year;
 
             while ((name = in.readLine()) != null) {
-                 name = name.split("=")[1];
-                 release_date = in.readLine().split("=")[1];
-                 year = Integer.parseInt(in.readLine().split("=")[1]);
-                 trailer = in.readLine().split("=")[1];
-                 synopsis = in.readLine().split("=")[1];
-                 genre = in.readLine().split("=")[1];
-                 rating = Double.parseDouble(in.readLine().split("=")[1]);
-                 imageLoc = "movies\\"+name.toLowerCase().replaceAll(" ", "_").replaceAll("[^A-Za-z0-9_]", "");
-                 this.add(name,release_date,rating,synopsis,imageLoc,trailer,genre,year);
-                 in.readLine();
+                name = name.split("=")[1];
+                release_date = in.readLine().split("=")[1];
+                year = Integer.parseInt(in.readLine().split("=")[1]);
+                trailer = in.readLine().split("=")[1];
+                synopsis = in.readLine().split("=")[1];
+                genre = in.readLine().split("=")[1];
+                rating = Double.parseDouble(in.readLine().split("=")[1]);
+                imageLoc = "movies\\"+name.toLowerCase().replaceAll(" ", "_").replaceAll("[^A-Za-z0-9_]", "");
+                this.add(name,release_date,rating,synopsis,imageLoc,trailer,genre,year);
+                in.readLine();
             }
+            in.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String[][] getImagesForAllMovies() {
+        String[][] list = new String[movie_list.size()][4];
+
+        for (int i = 0; i < list.length; i++) {
+            list[i] = getImages(movie_list.get(i));
+        }
+
+        return list;
+    }
+
+    public String[] getImages(Movie movie) {
+        File folder = new File(movie.imageLoc);
+        String[] images = new String[4];
+        int count = 0;
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isFile() && fileEntry.getName().compareToIgnoreCase("poster") != 0 && count < 3) {
+                images[count] = fileEntry.getAbsolutePath();
+                count++;
+            }
+            else if (fileEntry.isFile() && fileEntry.getName().compareToIgnoreCase("poster") == 0) {
+                images[3] = fileEntry.getAbsolutePath();
+            }
+        }
+        return images;
     }
 
     @Override
