@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 
@@ -98,7 +100,6 @@ public class MovieList {
     }
 
     public static void main(String[] args) {
-
     }
 
     public void delete(String name) {
@@ -135,12 +136,14 @@ public class MovieList {
                  m.drawable = Drawable.createFromStream(is, null);
                  in.readLine();
             }
+            in.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public String toString() {
