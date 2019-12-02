@@ -4,21 +4,74 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".MainActivity">
+tools:context=".MainActivity"
+    android:background="#000">
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/wheelview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-90dp"
+        android:text="My Movie"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeStepGranularity="2sp" />
 
     <com.lukedeighton.wheelview.WheelView
         android:id="@+id/wheelview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="640dp"
         app:emptyItemColor="#999999"
-        app:wheelColor="#444444"
+        app:repeatItems="true"
         app:rotatableWheelDrawable="false"
         app:selectionAngle="90.0"
-        app:selectionColor="@color/colorPrimaryDark"
+        app:selectionColor="@color/red_800"
         app:selectionPadding="4dp"
-        app:repeatItems="true"
-        app:wheelRadius="200dp"
-        app:wheelItemCount="14"
-        app:wheelPadding="13dp"
-        app:wheelItemRadius="41dp"/>
+        app:wheelColor="#222"
+        app:wheelItemCount="8"
+        app:wheelItemRadius="50dp"
+        app:wheelPadding="10dp"
+        app:wheelRadius="220dp" />
+
+    <ViewFlipper
+        android:id="@+id/image_view_flipper"
+        android:layout_width="189dp"
+        android:layout_height="125dp"
+        android:layout_centerInParent="true"
+        android:flipInterval="2100" />
+
+    <TextView
+        android:id="@+id/movie_desc"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wheelview"
+        android:layout_alignLeft="@id/wheelview"
+        android:layout_marginTop="-105dp"
+        android:layout_marginBottom="-20dp"
+        android:text=""
+        android:textColor="#fff"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="12sp"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="30sp"
+        app:autoSizeStepGranularity="1sp"
+        app:fontFamily="sans-serif" />
+
+    <Button
+        android:id="@+id/watch_trailer"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/image_view_flipper"
+        android:layout_centerHorizontal="true"
+        android:text="Watch Trailer"
+        />
+
 </RelativeLayout>

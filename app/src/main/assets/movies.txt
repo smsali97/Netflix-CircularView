@@ -1,0 +1,119 @@
+Name;IT
+Release date;8 September
+year;2017
+Trailer;https://www.youtube.com/watch?v=7no56Zw1e20
+Synopsis;In the summer of 1989, a group of bullied kids band together to destroy a shape-shifting monster, which disguises itself as a clown and preys on the children of Derry, their small Maine town.
+Genre;Horror
+IMDB rating;7.3
+-----------------------------------------------------------------------------------------------------------------------
+Name;Inception
+Release date;26 July
+year;2010
+Trailer;https://www.youtube.com/watch?v=YoHD9XEInc0
+Synopsis;A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.
+Genre;Action, Adventure, Sci-Fi
+IMDB rating;8.8
+-----------------------------------------------------------------------------------------------------------------------
+Name;Matrix
+Release date;31 March
+year;1999
+Trailer;https://www.youtube.com/watch?v=m8e-FF8MsqU
+Synopsis;A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.
+Genre;Action, Sci-Fi
+IMDB rating;8.7
+-----------------------------------------------------------------------------------------------------------------------
+Name;The Lord of the Rings: The Return of the King
+Release date;17 December
+year;2003
+Trailer;https://www.youtube.com/watch?v=r5X-hFf6Bwo
+Synopsis;Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.
+Genre;Adventure, Drama, Fantasy
+IMDB rating;8.9
+-----------------------------------------------------------------------------------------------------------------------
+Name;Sherlock Holmes
+Release date;25 December
+year;2009
+Trailer;https://www.youtube.com/watch?v=J7nJksXDBWc
+Synopsis;Detective Sherlock Holmes and his stalwart partner Watson engage in a battle of wits and brawn with a nemesis whose plot is a threat to all of England.
+Genre;Action, Adventure, Crime
+IMDB rating;7.6
+-----------------------------------------------------------------------------------------------------------------------
+Name;Black Mirror: Bandersnatch
+Release date;28 December
+year;2018
+Trailer;https://www.youtube.com/watch?v=XM0xWpBYlNM
+Synopsis;A young programmer starts to question reality when he adapts a mad writer's fantasy novel into a video game.
+Genre;Drama, Mystery, Sci-Fi
+IMDB rating;7.2
+-----------------------------------------------------------------------------------------------------------------------
+Name;Lion
+Release date;6 January
+year;2017
+Trailer;https://www.youtube.com/watch?v=-RNI9o06vqo
+Synopsis;A five-year-old Indian boy gets lost on the streets of Calcutta, thousands of kilometers from home. He survives many challenges before being adopted by a couple in Australia. 25 years later, he sets out to find his lost family.
+Genre;Biography, Drama
+IMDB rating;8.0
+-----------------------------------------------------------------------------------------------------------------------
+Name;Into the Wild
+Release date;19 October
+year;2007
+Trailer;https://www.youtube.com/watch?v=g7ArZ7VD-QQ
+Synopsis;After graduating from Emory University, top student and athlete Christopher McCandless abandons his possessions, gives his entire $24,000 savings account to charity and hitchhikes to Alaska to live in the wilderness. Along the way, Christopher encounters a series of characters that shape his life.
+Genre;Adventure, Biography, Drama
+IMDB rating;8.1
+-----------------------------------------------------------------------------------------------------------------------
+Name;In the Tall Grass
+Release date;4 October
+year;2019
+Trailer;https://www.youtube.com/watch?v=I5tEsyUyz-U
+Synopsis;After hearing a young boy's cry for help, a sister and brother venture into a vast field of tall grass in Kansas but soon discover there may be no way out...and that something evil lurks within.
+Genre;Drama, Horror, Thriller
+IMDB rating;5.5
+-----------------------------------------------------------------------------------------------------------------------
+Name;The Ritual
+Release date;9 February
+year;2018
+Trailer;https://www.youtube.com/watch?v=Vfugwq2uoa0
+Synopsis;A group of college friends reunite for a trip to the forest, but encounter a menacing presence in the woods that's stalking them.
+Genre;Horror, Mystery, Thriller
+IMDB rating;6.3
+-----------------------------------------------------------------------------------------------------------------------
+Name;Carrie
+Release date;18 October
+year;2013
+Trailer;https://www.youtube.com/watch?v=qSn7JyijA8k
+Synopsis;A shy girl, outcasted by her peers and sheltered by her religious mother, unleashes telekinetic terror on her small town after being pushed too far at her senior prom.
+Genre;Horror
+IMDB rating;5.9
+-----------------------------------------------------------------------------------------------------------------------
+Name;The Social Network
+Release date;1 October
+year;2010
+Trailer;https://www.youtube.com/watch?v=lB95KLmpLR4
+Synopsis;As Harvard student Mark Zuckerberg creates the social networking site that would become known as Facebook, he is sued by the twins who claimed he stole their idea, and by the co-founder who was later squeezed out of the business.
+Genre;Biography, Drama
+IMDB rating;7.7
+-----------------------------------------------------------------------------------------------------------------------
+Name;Snowpiercer
+Release date;11 July
+year;2014
+Trailer;https://www.youtube.com/watch?v=nX5PwfEMBM0
+Synopsis;In a future where a failed climate-change experiment has killed all life except for the lucky few who boarded the Snowpiercer, a train that travels around the globe, a new class system emerges.
+Genre;Action, Drama, Sci-Fi
+IMDB rating;7.1
+-----------------------------------------------------------------------------------------------------------------------
+Name;Mowgli: Legend of the Jungle
+Release date;7 December
+year;2018
+Trailer;https://www.youtube.com/watch?v=OVBjPpUlQrE
+Synopsis;A human child raised by wolves must face off against a menacing tiger named Shere Khan, as well as his own origins.
+Genre;Adventure, Drama, Fantasy
+IMDB rating;6.5
+-----------------------------------------------------------------------------------------------------------------------
+Name;Shrek the Third
+Release date;18 May
+year;2007
+Trailer;https://www.youtube.com/watch?v=_MoIr7811Bs
+Synopsis;When his new father-in-law, King Harold falls ill, Shrek is looked at as the heir to the land of Far, Far Away. Not one to give up his beloved swamp, Shrek recruits his friends Donkey and Puss in Boots to install the rebellious Artie as the new king. Princess Fiona, however, rallies a band of royal girlfriends to fend off a coup d'etat by the jilted Prince Charming.
+Genre;Animation, Adventure, Comedy
+IMDB rating;6.0

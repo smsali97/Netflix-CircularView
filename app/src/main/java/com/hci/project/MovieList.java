@@ -1,5 +1,11 @@
+package  com.hci.project;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
 import java.io.*;
 import java.util.ArrayList;
+
 
 public class MovieList {
 
@@ -92,10 +98,7 @@ public class MovieList {
     }
 
     public static void main(String[] args) {
-        MovieList a = new MovieList();
-        a.addDefault();
-        System.out.print(a);
-        System.out.print(a.getCurrentMovie().getImageLoc());
+
     }
 
     public void delete(String name) {
@@ -109,24 +112,27 @@ public class MovieList {
         return movie_list.get(loc);
     }
 
-    public void addDefault() {
+    public void addDefault(Context context) {
         try {
-            FileReader fr = new FileReader(new File( "movies\\movies.txt"));
-            BufferedReader in = new BufferedReader(fr);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(context.getAssets().open("movies.txt")));
             String name,release_date,synopsis ,imageLoc,trailer,posterLoc,genre;
             double rating;
             int year;
 
             while ((name = in.readLine()) != null) {
-                 name = name.split("=")[1];
-                 release_date = in.readLine().split("=")[1];
-                 year = Integer.parseInt(in.readLine().split("=")[1]);
-                 trailer = in.readLine().split("=")[1];
-                 synopsis = in.readLine().split("=")[1];
-                 genre = in.readLine().split("=")[1];
-                 rating = Double.parseDouble(in.readLine().split("=")[1]);
-                 imageLoc = "movies\\"+name.toLowerCase().replaceAll(" ", "_").replaceAll("[^A-Za-z0-9_]", "");
+                 name = name.split(";")[1];
+                 release_date = in.readLine().split(";")[1];
+                 year = Integer.parseInt(in.readLine().split(";")[1]);
+                 trailer = in.readLine().split(";")[1];
+                 synopsis = in.readLine().split(";")[1];
+                 genre = in.readLine().split(";")[1];
+                 rating = Double.parseDouble(in.readLine().split(";")[1]);
+                 imageLoc = name.toLowerCase().replaceAll(" ", "_").replaceAll("[^A-Za-z0-9_]", "");
                  this.add(name,release_date,rating,synopsis,imageLoc,trailer,genre,year);
+                 Movie m = this.find(name);
+                 InputStream is = context.getAssets().open(m.imageLoc + "/poster.jpg");
+                 m.drawable = Drawable.createFromStream(is, null);
                  in.readLine();
             }
         } catch (FileNotFoundException e) {

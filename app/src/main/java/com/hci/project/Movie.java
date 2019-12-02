@@ -1,3 +1,7 @@
+package com.hci.project;
+
+import android.graphics.drawable.Drawable;
+
 public class Movie {
 
     String name;
@@ -8,6 +12,8 @@ public class Movie {
     String trailer;
     String posterLoc;
     String genre;
+    Drawable drawable;
+    String[] screenshots;
     int year;
 
 
@@ -22,6 +28,9 @@ public class Movie {
         this.trailer = trailer;
         this.genre = genre;
         this.year = year;
+
+        this.screenshots = new String[] { posterLoc + "/s1.jpg" , posterLoc + "/s2.jpg", posterLoc + "/s3.jpg"};
+
     }
 
     public Movie(String name, String release_date,double rating, String synopsis,String folder,String poster_loc,String trailer,String genre, int year) {
