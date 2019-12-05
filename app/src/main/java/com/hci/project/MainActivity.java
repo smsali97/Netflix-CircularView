@@ -1,13 +1,17 @@
 package com.hci.project;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -23,32 +27,81 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.HttpMethod;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferType;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import android.provider.Settings.Secure;
 
 import com.lukedeighton.wheelview.WheelView;
 import com.lukedeighton.wheelview.adapter.WheelArrayAdapter;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
+    private AmazonS3Client s3Client;
+    private TransferUtility transferUtility;
     private ViewFlipper viewFlipper;
     private TextView movieTitle;
     private TextView movieDesc;
     private Button watch_trailer;
     private static final int ITEM_COUNT = 10;
     private float previousAngle = 0;
-
+    private File temp = null;
     private MovieList movieList = new MovieList();
+    private String id;
 
     private Movie currMovie;
+    private int clicks = 0;
+    private int shown_interest = 0;
+    private long time_on_last_item = Calendar.getInstance().getTimeInMillis();
+    private Movie firstMovie = null;
+    private Movie lastMovie = null;
+
+    private boolean file_saved = false;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        id = Secure.ANDROID_ID;
+        getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
+
+        try {
+            temp = File.createTempFile(""+ id, ".txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Delete temp file when program exits.
+        temp.deleteOnExit();
+        BasicAWSCredentials credentials = new BasicAWSCredentials("", "");
+        s3Client = new AmazonS3Client(credentials);
+        transferUtility =
+                TransferUtility.builder()
+                        .context(getApplicationContext())
+                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                        .s3Client(s3Client)
+                        .build();
 
         final WheelView wheelView = (WheelView) findViewById(R.id.wheelview);
 
@@ -81,7 +134,10 @@ public class MainActivity extends AppCompatActivity {
 //                Map.Entry<String, Integer> selectedEntry = ((MaterialColorAdapter) parent.getAdapter()).getItem(position);
 //                parent.setSelectionColor(getContrastColor(selectedEntry));
 
-
+                if (Calendar.getInstance().getTimeInMillis() - time_on_last_item > 2000) {
+                    shown_interest++;
+                }
+                time_on_last_item = Calendar.getInstance().getTimeInMillis();
                 currMovie = (( MovieAdapter) parent.getAdapter()).getItem(position);
 
 
@@ -124,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         watch_trailer.setOnClickListener(v -> {
             if (currMovie != null ) {
                 watchYoutubeVideo(this,currMovie.trailer);
@@ -134,11 +189,24 @@ public class MainActivity extends AppCompatActivity {
 
 
         wheelView.setOnWheelItemClickListener(new WheelView.OnWheelItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onWheelItemClick(WheelView parent, int position, boolean isSelected) {
                 currMovie = (( MovieAdapter) parent.getAdapter()).getItem(position);
                 String msg = String.format("You selected to watch %s!", currMovie.name);
                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+
+                if (clicks == 0) {
+                    firstMovie = currMovie;
+                }
+                lastMovie = currMovie;
+                clicks++;
+
+
+
+
+
             }
         });
 
@@ -152,6 +220,106 @@ public class MainActivity extends AppCompatActivity {
                 wheelView.setMidSelected();
             }
         }, 3000); */
+    }
+
+    //for saving metrics info
+    @Override
+    public void onPause() {
+        super.onPause();
+        file_saved = true;
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(new FileWriter(temp));
+            out.write("first click; "+firstMovie.name + "\nnumber of clicks; "+clicks + "\nnumber of movies shown interest in; " + shown_interest
+                        + "\nlast click; " + lastMovie.name);
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TransferObserver uploadObserver = transferUtility.upload(
+                "appcon-storage",
+                temp.getName()
+                ,temp);
+
+        uploadObserver.setTransferListener(new TransferListener() {
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (TransferState.COMPLETED == state) {
+                                /*CharSequence text = "Upload Finished! This will last one day in our servers.";
+                                int duration = Toast.LENGTH_LONG;
+
+                                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                                toast.show();
+                                */
+                    Regions clientRegion = Regions.DEFAULT_REGION;
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                ex.printStackTrace();
+            }
+        } );
+    }
+
+    public void onResume() {
+        super.onResume();
+        file_saved = false;
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        if (!file_saved) {
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(new FileWriter(temp));
+            out.write("first click; "+firstMovie.name + "\nnumber of clicks; "+clicks + "\nnumber of movies shown interest in; " + shown_interest
+                    + "\nlast click; " + lastMovie.name);
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TransferObserver uploadObserver = transferUtility.upload(
+                "appcon-storage",
+                temp.getName()
+                ,temp);
+
+        uploadObserver.setTransferListener(new TransferListener() {
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (TransferState.COMPLETED == state) {
+                                /*CharSequence text = "Upload Finished! This will last one day in our servers.";
+                                int duration = Toast.LENGTH_LONG;
+
+                                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                                toast.show();
+                                */
+                    Regions clientRegion = Regions.DEFAULT_REGION;
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                ex.printStackTrace();
+            }
+        } );
+        }
     }
 
     //get the materials darker contrast
