@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -17,7 +18,9 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
@@ -45,8 +48,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.provider.Settings.Secure;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.lukedeighton.wheelview.WheelView;
 import com.lukedeighton.wheelview.adapter.WheelArrayAdapter;
+import org.threeten.bp.Instant;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private TransferUtility transferUtility;
     private ViewFlipper viewFlipper;
     private TextView movieTitle;
+    private TextView movieInfo;
     private TextView movieDesc;
     private Button watch_trailer;
     private static final int ITEM_COUNT = 10;
@@ -73,17 +79,18 @@ public class MainActivity extends AppCompatActivity {
     private Movie currMovie;
     private int clicks = 0;
     private int shown_interest = 0;
-    private long time_on_last_item = Calendar.getInstance().getTimeInMillis();
+    private long time_on_last_item = Instant.now().getEpochSecond();;
     private Movie firstMovie = null;
     private Movie lastMovie = null;
 
     private boolean file_saved = false;
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         id = Secure.ANDROID_ID;
+        AndroidThreeTen.init(this);
+
         getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
 
         try {
@@ -110,11 +117,11 @@ public class MainActivity extends AppCompatActivity {
         viewFlipper = (ViewFlipper)findViewById(R.id.image_view_flipper);
         movieTitle = findViewById(R.id.movie_title);
         movieDesc = findViewById(R.id.movie_desc);
+        movieInfo = findViewById(R.id.movie_info);
         watch_trailer = findViewById(R.id.watch_trailer);
         viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
         viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
         viewFlipper.setAutoStart(true);
-
         //create data for the adapter
 //        List<Map.Entry<String, Integer>> entries = new ArrayList<Map.Entry<String, Integer>>(ITEM_COUNT);
 //        for (int i = 0; i < ITEM_COUNT; i++) {
@@ -134,26 +141,35 @@ public class MainActivity extends AppCompatActivity {
 //                Map.Entry<String, Integer> selectedEntry = ((MaterialColorAdapter) parent.getAdapter()).getItem(position);
 //                parent.setSelectionColor(getContrastColor(selectedEntry));
 
-                if (Calendar.getInstance().getTimeInMillis() - time_on_last_item > 2000) {
+                if (Instant.now().getEpochSecond() - time_on_last_item > 2) {
                     shown_interest++;
                 }
-                time_on_last_item = Calendar.getInstance().getTimeInMillis();
+                time_on_last_item = Instant.now().getEpochSecond();
                 currMovie = (( MovieAdapter) parent.getAdapter()).getItem(position);
-
-
+                if (currMovie.name.length() > 25 && currMovie.name.lastIndexOf("\n") == -1) {
+                    int split_loc = currMovie.name.substring(0,25).lastIndexOf(" ");
+                    currMovie.setName(currMovie.name.substring(0,split_loc) + "\n" + currMovie.name.substring(split_loc+1,currMovie.name.length()));
+                }
                 SpannableString ss1=  new SpannableString(currMovie.name + " (" + currMovie.year + ")\n");
                 ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, currMovie.name.length(), 0);// set color
-                ss1.setSpan(new RelativeSizeSpan(2f), 0,currMovie.name.length(), 0); // set size
+                ss1.setSpan(new RelativeSizeSpan(1.5f), 0,currMovie.name.length(), 0); // set size
 
                 String myRating = getStars(currMovie.rating);
 
                 SpannableString ss12 =  new SpannableString(myRating);
                 ss12.setSpan(new ForegroundColorSpan(Color.YELLOW), 13, myRating.length(), 0);// set color
+                ss12.setSpan(new RelativeSizeSpan(0.85f), 0,myRating.length(), 0);
+
+                SpannableString genre = new SpannableString("Genre: " + currMovie.genre);
+                genre.setSpan(new RelativeSizeSpan(0.85f), 0,genre.length(), 0);
 
                 SpannableString ss3=  new SpannableString("Synopsis:\n" + currMovie.synopsis);
-                ss3.setSpan(new RelativeSizeSpan(1.75f), 0,10, 0); // set size
+                ss3.setSpan(new RelativeSizeSpan(1.5f), 0,10, 0); // set size
 
-                movieTitle.setText(TextUtils.concat(ss1,ss12,"Genre: " + currMovie.genre));
+
+
+                movieTitle.setText(ss1);
+                movieInfo.setText(TextUtils.concat(ss12,genre));
                 movieDesc.setText(ss3);
                 viewFlipper.removeAllViews();
                 for (String img: currMovie.screenshots) {
@@ -230,8 +246,16 @@ public class MainActivity extends AppCompatActivity {
         BufferedWriter out = null;
         try {
             out = new BufferedWriter(new FileWriter(temp));
-            out.write("first click; "+firstMovie.name + "\nnumber of clicks; "+clicks + "\nnumber of movies shown interest in; " + shown_interest
+            if (firstMovie != null) {
+                out.write("first click; " + firstMovie.name + "\nnumber of clicks; " + clicks + "\nnumber of movies shown interest in; " + shown_interest
                         + "\nlast click; " + lastMovie.name);
+
+            }
+
+            else {
+                out.write("first click; None" +  "\nnumber of clicks; " + clicks + "\nnumber of movies shown interest in; " + shown_interest
+                        + "\nlast click; None");
+            }
             out.close();
 
         } catch (IOException e) {

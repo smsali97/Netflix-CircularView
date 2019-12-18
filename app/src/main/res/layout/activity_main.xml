@@ -8,70 +8,99 @@ tools:context=".MainActivity"
     android:background="#000">
 
     <TextView
-        android:id="@+id/movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/wheelview"
+        android:layout_below="@id/wheelview"
+        android:layout_alignLeft="@id/wheelview"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-90dp"
-        android:text="My Movie"
+        android:layout_marginTop="-105dp"
+        android:layout_marginBottom="-20dp"
+        android:text=""
         android:textColor="#fff"
         android:textStyle="bold"
-        app:fontFamily="sans-serif"
-        app:autoSizeTextType="uniform"
+        app:autoSizeMaxTextSize="30sp"
         app:autoSizeMinTextSize="12sp"
-        app:autoSizeMaxTextSize="100sp"
-        app:autoSizeStepGranularity="2sp" />
+        app:autoSizeStepGranularity="1sp"
+        app:autoSizeTextType="uniform"
+        app:fontFamily="sans-serif" />
 
     <com.lukedeighton.wheelview.WheelView
         android:id="@+id/wheelview"
         android:layout_width="match_parent"
-        android:layout_height="640dp"
+        android:layout_height="match_parent"
         app:emptyItemColor="#999999"
         app:repeatItems="true"
         app:rotatableWheelDrawable="false"
         app:selectionAngle="90.0"
         app:selectionColor="@color/red_800"
-        app:selectionPadding="4dp"
+        app:selectionPadding="@dimen/_4sdp"
         app:wheelColor="#222"
         app:wheelItemCount="8"
-        app:wheelItemRadius="50dp"
-        app:wheelPadding="10dp"
-        app:wheelRadius="220dp" />
+        app:wheelItemRadius="@dimen/_35sdp"
+        app:wheelPadding="@dimen/_5sdp"
+        app:wheelRadius="match_parent" />
 
     <ViewFlipper
         android:id="@+id/image_view_flipper"
-        android:layout_width="189dp"
-        android:layout_height="125dp"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_80sdp"
         android:layout_centerInParent="true"
         android:flipInterval="2100" />
 
     <TextView
         android:id="@+id/movie_desc"
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_below="@id/wheelview"
         android:layout_alignLeft="@id/wheelview"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="-105dp"
         android:layout_marginBottom="-20dp"
         android:text=""
         android:textColor="#fff"
-        app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="12sp"
         android:textStyle="bold"
-        app:autoSizeMaxTextSize="30sp"
-        app:autoSizeStepGranularity="1sp"
         app:fontFamily="sans-serif" />
 
     <Button
         android:id="@+id/watch_trailer"
         style="@android:style/Widget.DeviceDefault.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_32sdp"
         android:layout_above="@id/image_view_flipper"
         android:layout_centerHorizontal="true"
         android:text="Watch Trailer"
-        />
+        android:textSize="@dimen/_6sdp" />
+
+    <TextView
+        android:id="@+id/movie_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="-1dp"
+        android:layout_marginBottom="-26dp"
+        android:text="Rating"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:fontFamily="sans-serif" />
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-26dp"
+        android:ellipsize="marquee"
+        android:maxLines="2"
+        android:text="My Movie"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:fontFamily="sans-serif" />
 
 </RelativeLayout>
